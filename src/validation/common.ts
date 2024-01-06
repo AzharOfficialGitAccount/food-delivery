@@ -17,6 +17,14 @@ const register = Joi.object({
     roles: Joi.string().required(),
 });
 
+const restaurant = Joi.object({
+    name: Joi.string().allow(''),
+    contactNo: Joi.number().allow(''),
+    address: Joi.string().allow(''),
+    media: Joi.string().allow(''),
+    url: Joi.string().allow(''),
+});
+
 const profile = Joi.object({
     email: Joi.string().allow(''),
     userName: Joi.string().allow(''),
@@ -28,5 +36,6 @@ const profile = Joi.object({
 export {
     login,
     register,
-    profile
+    profile,
+    restaurant
 };

@@ -21,6 +21,10 @@ export const register = async (req: Request, res: Response) => {
             roles,
             userName
         };
+        const checkEmail = await commonService.getByCondition(User, { email });
+        if (checkEmail) {
+            return response.error(req, res, { msgCode: 'EMAIL_EXIST' }, httpStatus.INTERNAL_SERVER_ERROR);
+        }
         const userObj = await commonService.create(User, userData);
         if (userObj) {
             return response.success(req, res, { msgCode: 'USER_CREATED', data: userObj }, httpStatus.OK);
