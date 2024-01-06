@@ -1,20 +1,25 @@
 import { Document, Schema, Model, model } from 'mongoose';
-import { UserType, Gender } from '../constant/common';
+import { UserType } from '../constant/common';
 
-const userTypes = Object.values(UserType) as number[];
-const userGenders = Object.values(Gender) as string[];
+const userTypes = Object.values(UserType);
 
 export interface UserDocument extends Document {
     mobile?: number;
     email: string;
     password?: string;
     profilePic?: string;
-    userType: number;
-    gender?: string;
+    userType: UserType;
     isDeleted?: boolean;
     isActive?: boolean;
     jwt?: string[];
 }
+
+const userTypeValidator = {
+    validator: function (value: UserType) {
+        return userTypes.includes(value);
+    },
+    message: 'Invalid user type'
+};
 
 const userSchema: Schema<UserDocument> = new Schema({
     email: {
@@ -33,11 +38,8 @@ const userSchema: Schema<UserDocument> = new Schema({
     userType: {
         type: Number,
         enum: userTypes,
-        default: UserType.USER
-    },
-    gender: {
-        type: String,
-        enum: userGenders
+        default: UserType.USER,
+        validate: userTypeValidator
     },
     isDeleted: {
         type: Boolean,

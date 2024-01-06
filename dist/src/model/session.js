@@ -1,32 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Session = void 0;
 const mongoose_1 = require("mongoose");
-const common_1 = require("../constant/common");
-const sessionSchema = new mongoose_1.Schema({
-    userId: {
-        type: mongoose_1.Schema.Types.ObjectId,
-        ref: 'users',
-    },
-    deviceId: {
-        type: String,
-    },
-    deviceType: {
-        type: Number,
-        enum: [common_1.DeviceType.Android, common_1.DeviceType.IOS, common_1.DeviceType.Web],
-    },
-    deviceToken: {
-        type: String,
-    },
-    accessToken: {
-        type: String,
-    },
-    lastLoginDate: {
-        type: Date,
-        default: Date.now(),
-    },
-}, {
-    timestamps: true,
-    versionKey: false,
+const SessionSchema = new mongoose_1.Schema({
+    userId: { type: String, required: true },
+    deviceId: { type: String, required: true },
+    deviceToken: { type: String, required: true },
+    deviceType: { type: String, required: true },
+    accessToken: { type: String, required: true },
 });
-const Session = (0, mongoose_1.model)('sessions', sessionSchema);
-exports.default = Session;
+const Session = (0, mongoose_1.model)('Session', SessionSchema);
+exports.Session = Session;

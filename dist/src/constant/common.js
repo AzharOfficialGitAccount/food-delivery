@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeviceType = exports.Gender = exports.ErrorCode = exports.ErrorMessage = exports.UserStatus = exports.UserType = void 0;
 var UserType;
 (function (UserType) {
-    UserType[UserType["ADMIN"] = 1] = "ADMIN";
+    UserType[UserType["OWNER"] = 1] = "OWNER";
     UserType[UserType["USER"] = 2] = "USER";
 })(UserType || (exports.UserType = UserType = {}));
 var UserStatus;

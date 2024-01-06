@@ -6,6 +6,7 @@ import { errorHandler } from './src/middleware';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { Connection } from 'mongoose';
+import routes from './src/routes';
 
 dotenv.config();
 
@@ -31,7 +32,7 @@ httpServer.listen(process.env.PORT, () => {
   console.info(`Server up successfully - port: ${process.env.PORT}`);
 });
 
-// app.use('/api', require('./app/routes/index'));
+app.use('/api', routes);
 
 app.use(errorHandler.methodNotAllowed);
 app.use(errorHandler.genericErrorHandler);

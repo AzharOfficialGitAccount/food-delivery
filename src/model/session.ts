@@ -1,44 +1,20 @@
-import { Document, Schema, Model, model } from 'mongoose';
-import { DeviceType } from '../constant/common';
-import { UserDocument } from './user';
-
-export interface SessionDocument extends Document {
-    userId: UserDocument['_id'];
+import { Document, Schema, model } from 'mongoose';
+interface SessionDocument extends Document {
+    userId: string;
     deviceId: string;
-    deviceType: number;
     deviceToken: string;
+    deviceType: string;
     accessToken: string;
-    lastLoginDate: Date;
 }
 
-const sessionSchema: Schema<SessionDocument> = new Schema({
-    userId: {
-        type: Schema.Types.ObjectId,
-        ref: 'users',
-    },
-    deviceId: {
-        type: String,
-    },
-    deviceType: {
-        type: Number,
-        enum: [DeviceType.Android, DeviceType.IOS, DeviceType.Web],
-    },
-    deviceToken: {
-        type: String,
-    },
-    accessToken: {
-        type: String,
-    },
-    lastLoginDate: {
-        type: Date,
-        default: Date.now(),
-    },
-},
-    {
-        timestamps: true,
-        versionKey: false,
-    });
+const SessionSchema = new Schema({
+    userId: { type: String, required: true },
+    deviceId: { type: String, required: true },
+    deviceToken: { type: String, required: true },
+    deviceType: { type: String, required: true },
+    accessToken: { type: String, required: true },
+});
 
-const Session: Model<SessionDocument> = model<SessionDocument>('sessions', sessionSchema);
+const Session = model<SessionDocument>('Session', SessionSchema);
 
-export default Session;
+export { Session, SessionDocument };

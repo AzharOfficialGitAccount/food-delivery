@@ -1,5 +1,5 @@
 export enum UserType {
-    ADMIN = 1,
+    OWNER = 1,
     USER = 2
 }
 
@@ -19,12 +19,6 @@ export const ErrorCode = {
     INVALID_ROUTE: 'INVALID_ROUTE'
 } as const;
 
-export enum Gender {
-    MALE = 'male',
-    FEMALE = 'female',
-    OTHER = 'other'
-}
-
 export enum DeviceType {
     Android = 1,
     IOS = 2,
@@ -35,5 +29,4 @@ export type UserTypes = keyof typeof UserType;
 export type UserStatuses = typeof UserStatus[keyof typeof UserStatus];
 export type ErrorMessages = keyof typeof ErrorMessage;
 export type ErrorCodes = keyof typeof ErrorCode;
-export type Genders = keyof typeof Gender;
 export type DeviceTypes = keyof typeof DeviceType;

@@ -50,7 +50,7 @@ exports.verifyAuthToken = exports.generateAuthJwt = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const response = __importStar(require("../response/index"));
 const http_status_1 = __importDefault(require("http-status"));
-const common_1 = __importDefault(require("../services/common"));
+const commonService = __importStar(require("../services/common"));
 const model_1 = require("../model");
 const environment_1 = require("../constant/environment");
 const generateAuthJwt = (payload) => {
@@ -86,10 +86,10 @@ const verifyAuthToken = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
         const UserModel = model_1.User;
         const condition = { accessToken: cleanedToken };
         const userId = decoded.userId || decoded._id;
-        const checkJwt = yield common_1.default.getByCondition(sessionModel, condition);
+        const checkJwt = yield commonService.getByCondition(sessionModel, condition);
         if (!checkJwt) {
             const userCondition = { _id: userId, isActive: false, isDeleted: true };
-            const checkUser = yield common_1.default.getByCondition(UserModel, userCondition);
+            const checkUser = yield commonService.getByCondition(UserModel, userCondition);
             if (checkUser) {
                 return response.error(req, res, { msgCode: 'USER_IS_DELETED' }, http_status_1.default.UNAUTHORIZED);
             }
@@ -97,7 +97,7 @@ const verifyAuthToken = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
         }
         else {
             const userCondition = { _id: checkJwt.userId, isDeleted: false, isActive: false };
-            const checkUser = yield common_1.default.getByCondition(UserModel, userCondition);
+            const checkUser = yield commonService.getByCondition(UserModel, userCondition);
             if (checkUser) {
                 return response.error(req, res, { msgCode: 'USER_IS_BLOCKED' }, http_status_1.default.UNAUTHORIZED);
             }

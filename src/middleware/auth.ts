@@ -2,7 +2,7 @@ import jwt, { VerifyErrors } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import * as response from '../response/index';
 import httpStatus from 'http-status';
-import commonService from '../services/common';
+import * as commonService from '../services/common';
 import { User, Session } from '../model';
 
 import { env } from '../constant/environment';
