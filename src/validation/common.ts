@@ -23,7 +23,27 @@ const restaurant = Joi.object({
     address: Joi.string().allow(''),
     media: Joi.string().allow(''),
     url: Joi.string().allow(''),
+    cuisine: Joi.string().allow(''),
+    openingHours: Joi.string().allow(''),
+    menuId: Joi.string().allow()
 });
+
+const menu = Joi.object({
+    itemName: Joi.string().allow(''),
+    description: Joi.string().allow(''),
+    price: Joi.number().allow(''),
+    category: Joi.string().allow(''),
+    restaurantId: Joi.string().allow(''),
+    isVegetarian: Joi.boolean().allow(''),
+    isVegan: Joi.boolean().allow(''),
+    isSpicy: Joi.boolean().allow()
+});
+
+const menuQuery = Joi.object({
+    ownerId: Joi.string().allow(),
+    restaurantId: Joi.string().allow(),
+    menuId: Joi.string().allow()
+})
 
 const profile = Joi.object({
     email: Joi.string().allow(''),
@@ -37,5 +57,7 @@ export {
     login,
     register,
     profile,
-    restaurant
+    restaurant,
+    menu,
+    menuQuery
 };

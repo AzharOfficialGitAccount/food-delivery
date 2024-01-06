@@ -1,8 +1,12 @@
-import { Document, Schema, Model, model } from 'mongoose';
+import { Document, Schema, Model, model, Types } from 'mongoose';
 export interface RestaurantDocument extends Document {
+    menuId: Types.ObjectId,
+    ownerId: Types.ObjectId,
     contactNo?: number;
     name: string,
-    ownerId: string,
+    menu: string,
+    cuisine: string,
+    openingHours: string,
     address: string,
     media: string,
     url: string,
@@ -11,17 +15,32 @@ export interface RestaurantDocument extends Document {
 }
 
 const restaurantSchema: Schema<RestaurantDocument> = new Schema({
-    name: {
-        type: String,
-    },
-    contactNo: {
-        type: Number
+    menuId: {
+        type: Schema.Types.ObjectId,
+        ref: 'menus'
     },
     ownerId: {
-        type: String
+        type: Schema.Types.ObjectId,
+        ref: 'users'
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    contactNo: {
+        type: Number,
+        required: true
+    },
+    cuisine: {
+        type: String,
+    },
+    openingHours: {
+        type: String,
+        required: true
     },
     address: {
-        type: String
+        type: String,
+        required: true
     },
     media: {
         type: String

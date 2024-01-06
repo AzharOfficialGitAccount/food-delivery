@@ -1,4 +1,4 @@
-import { Document, Schema, model } from 'mongoose';
+import { Document, Schema, model, Types } from 'mongoose';
 interface SessionDocument extends Document {
     userId: string;
     deviceId: string;
@@ -8,11 +8,27 @@ interface SessionDocument extends Document {
 }
 
 const SessionSchema = new Schema({
-    userId: { type: String, required: true },
-    deviceId: { type: String, required: true },
-    deviceToken: { type: String, required: true },
-    deviceType: { type: String, required: true },
-    accessToken: { type: String, required: true },
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'users',
+        required: true
+    },
+    deviceId: {
+        type: String,
+        required: true
+    },
+    deviceToken: {
+        type: String,
+        required: true
+    },
+    deviceType: {
+        type: String,
+        required: true
+    },
+    accessToken: {
+        type: String,
+        required: true
+    },
 });
 
 const Session = model<SessionDocument>('Session', SessionSchema);

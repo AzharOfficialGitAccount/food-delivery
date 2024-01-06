@@ -6,14 +6,17 @@ import * as commonService from '../../services/common';
 
 export const restaurants = async (req: Request, res: Response) => {
     try {
-        const { name, contactNo, address, media, url } = req.body;
+        const { menuId, name, contactNo, cuisine, openingHours, address, media, url } = req.body;
         const { Restaurant } = model;
         const id: string = (req as any).data?.id;
 
         const userData = {
             name,
             contactNo,
+            cuisine,
+            openingHours,
             ownerId: id,
+            menuId,
             address,
             media,
             url
@@ -35,7 +38,7 @@ export const getRestaurant = async (req: Request, res: Response): Promise<void> 
         const ownerId: string = (req as any).data?.id;
         const { Restaurant } = model;
 
-        const projects = { _id: 1, name: 1, contactNo: 1, ownerId: 1, address: 1, media: 1, url: 1 }
+        const projects = { _id: 1, name: 1, contactNo: 1, cuisine: 1, openingHours: 1, address: 1, media: 1, url: 1 }
         const restaurant = await commonService.getByCondition(Restaurant, { ownerId }, projects);
 
         if (!restaurant) {
@@ -52,11 +55,13 @@ export const updateRestaurant = async (req: Request, res: Response): Promise<voi
     try {
         const ownerId = (req as any).data.userId;
         const { Restaurant } = model;
-        const { name, contactNo, address, media, url } = req.body;
+        const { name, contactNo, openingHours, cuisine, address, media, url } = req.body;
 
         const updateDetail = {
             name,
             contactNo,
+            cuisine,
+            openingHours,
             address,
             media,
             url

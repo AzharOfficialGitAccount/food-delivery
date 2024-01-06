@@ -1,39 +1,68 @@
-import { Document, Schema, Model, model } from 'mongoose';
+import { Document, Schema, Model, model, Types } from 'mongoose';
+
 export interface MenuDocument extends Document {
-    restaurantId: string;
-    itemName?: string;
-    description: string,
-    price?: number;
+    restaurantId: Types.ObjectId;
+    restaurantOwnerId: Types.ObjectId;
+    itemName: string;
+    description: string;
+    price: number;
+    category: string;
+    isVegetarian: boolean;
+    isVegan: boolean;
+    isSpicy: boolean;
     isDeleted?: boolean;
     isActive?: boolean;
 }
 
-const menuSchema: Schema<MenuDocument> = new Schema({
+const menuSchema: Schema<MenuDocument> = new Schema<MenuDocument>({
     restaurantId: {
-        type: String,
-        required: true
+        type: Schema.Types.ObjectId,
+        ref: 'restaurants',
+    },
+    restaurantOwnerId: {
+        type: Schema.Types.ObjectId,
+        ref: 'users'
     },
     itemName: {
         type: String,
-    },
-    price: {
-        type: Number
+        required: true,
     },
     description: {
-        type: String
+        type: String,
+        required: true,
+    },
+    price: {
+        type: Number,
+        required: true,
+    },
+    category: {
+        type: String,
+        required: true,
+    },
+    isVegetarian: {
+        type: Boolean,
+        default: false,
+    },
+    isVegan: {
+        type: Boolean,
+        default: false,
+    },
+    isSpicy: {
+        type: Boolean,
+        default: false,
     },
     isDeleted: {
         type: Boolean,
-        default: false
+        default: false,
     },
     isActive: {
         type: Boolean,
-        default: true
+        default: true,
     },
 },
     {
         timestamps: true,
-        versionKey: false
+        versionKey: false,
     });
 
 const Menu: Model<MenuDocument> = model<MenuDocument>('menus', menuSchema);
