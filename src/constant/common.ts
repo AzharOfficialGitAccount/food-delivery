@@ -1,6 +1,6 @@
 export enum UserType {
-    OWNER = 1,
-    USER = 2
+    OWNER = 'Owner',
+    USER = 'customer'
 }
 
 export enum UserStatus {
@@ -20,9 +20,9 @@ export const ErrorCode = {
 } as const;
 
 export enum DeviceType {
-    Android = 1,
-    IOS = 2,
-    Web = 3
+    Android = 'Android',
+    IOS = 'ios',
+    Web = 'web'
 }
 
 export type UserTypes = keyof typeof UserType;

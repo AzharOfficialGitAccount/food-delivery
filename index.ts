@@ -1,11 +1,10 @@
 import express, { Express } from 'express';
 import bodyParser from 'body-parser';
 import http from 'http';
-import { connections } from './src/config/database';
+import { dbConnection } from './src/config/database';
 import { errorHandler } from './src/middleware';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { Connection } from 'mongoose';
 import routes from './src/routes';
 
 dotenv.config();
@@ -46,19 +45,17 @@ process.on('unhandledRejection', (err: unknown) => {
   }
 });
 
-const closeHandler = () => {
-  Object.values(connections).forEach((connection: Connection | any) => {
-    if (typeof connection === 'object' && connection !== null) {
-      if (typeof connection.close === 'function') {
-        connection.close();
-      }
-    }
-  });
-  if (httpServer instanceof http.Server) {
+const closeHandler = async () => {
+  try {
+    await dbConnection.close();
+    console.info('Database connection closed successfully');
     httpServer.close(() => {
       console.info('Server is stopped successfully');
       process.exit(0);
     });
+  } catch (error) {
+    console.error('Error closing database connection:', error);
+    process.exit(1);
   }
 };
 

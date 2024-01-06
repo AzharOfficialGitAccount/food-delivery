@@ -1,4 +1,3 @@
-// your file
 import { Request, Response } from 'express';
 import * as response from '../../response/index';
 import * as httpStatus from 'http-status';
@@ -7,7 +6,6 @@ import * as commonService from '../../services/common';
 import * as commonConstant from '../../constant/common';
 import * as helper from '../../utils/helper';
 import moment from 'moment-timezone';
-
 interface LoginData {
     deviceDetails: {
         deviceId: string;
@@ -21,14 +19,13 @@ interface LoginData {
         email: string;
     };
 }
-
 interface CustomRequest extends Request {
     loginData: LoginData;
 }
 
 export const createSession = async (req: CustomRequest, res: Response) => {
     try {
-        const { deviceId, deviceToken, deviceType } = req.loginData.deviceDetails;
+        const { deviceId, deviceToken } = req.loginData.deviceDetails;
         const condition = { deviceId };
         const { Session } = model;
         const checkSession = await commonService.getByCondition(Session, condition);
@@ -43,7 +40,7 @@ export const createSession = async (req: CustomRequest, res: Response) => {
                 userId: req.loginData.authDetails._id,
                 deviceId,
                 deviceToken,
-                deviceType: commonConstant.DeviceType,
+                deviceType: commonConstant.DeviceType.Android,
                 accessToken: req.loginData.authDetails.token,
             };
             const createSession = await commonService.create(Session, sessionData);

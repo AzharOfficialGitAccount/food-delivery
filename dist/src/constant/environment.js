@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.serverType = exports.env = void 0;
+exports.TOKEN_EXPIRES_IN = exports.serverType = exports.env = void 0;
 exports.env = {
     PORT: process.env.PORT,
     MONGODB_USER_URI: process.env.MONGODB_USER_URI,
@@ -16,3 +16,7 @@ exports.serverType = {
     TEST: 'TEST',
     PRODUCTION: 'PRODUCTION'
 };
+function TOKEN_EXPIRES_IN(TOKEN_EXPIRES_IN) {
+    throw new Error('Function not implemented.');
+}
+exports.TOKEN_EXPIRES_IN = TOKEN_EXPIRES_IN;

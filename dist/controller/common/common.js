@@ -56,7 +56,7 @@ const helper = __importStar(require("../../utils/helper"));
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const createSession = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { deviceId, deviceToken } = req.loginData.deviceDetails;
+        const { deviceId, deviceToken, deviceType } = req.loginData.deviceDetails;
         const condition = { deviceId };
         const { Session } = model;
         const checkSession = yield commonService.getByCondition(Session, condition);

@@ -28,10 +28,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const controller = __importStar(require("../../../controller/user/auth"));
-const commonController = __importStar(require("../../../controller/common/common"));
 const schema = __importStar(require("../../../validation/common"));
 const requestValidator_1 = require("../../../middleware/requestValidator");
 const router = express_1.default.Router();
 router.post('/register', (0, requestValidator_1.reqValidator)(schema.register), controller.register);
-router.post('/login', (0, requestValidator_1.reqValidator)(schema.login), controller.login, commonController.createSession);
 exports.default = router;

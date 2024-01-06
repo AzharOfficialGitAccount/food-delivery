@@ -31,27 +31,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = exports.register = void 0;
+exports.register = void 0;
 const response = __importStar(require("../../response/index"));
 const httpStatus = __importStar(require("http-status"));
 const model = __importStar(require("../../model"));
 const commonService = __importStar(require("../../services/common"));
 const passwordHash = __importStar(require("../../utils/password"));
 const commonConstant = __importStar(require("../../constant/common"));
-const authJwt = __importStar(require("../../middleware/auth"));
-const env = __importStar(require("../../constant/environment"));
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, mobile, profilePic, password } = req.body;
@@ -77,41 +64,3 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.register = register;
-const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { email, password, deviceToken, deviceId } = req.body;
-        const condition = { email, isDeleted: false, userType: commonConstant.UserType.USER, isActive: true };
-        const { User } = model;
-        const checkUser = yield commonService.getByCondition(User, condition);
-        if (!checkUser) {
-            return response.error(req, res, { msgCode: 'INVALID_CREDENTIALS' }, httpStatus.NOT_FOUND);
-        }
-        const isLogin = passwordHash.comparePassword(password, (checkUser === null || checkUser === void 0 ? void 0 : checkUser.password) || '');
-        if (!isLogin) {
-            return response.error(req, res, { msgCode: 'INVALID_CREDENTIALS' }, httpStatus.FORBIDDEN);
-        }
-        if (!(checkUser === null || checkUser === void 0 ? void 0 : checkUser.isActive)) {
-            return response.error(req, res, { msgCode: 'BLOCK_MSG' }, httpStatus.FORBIDDEN);
-        }
-        const _a = checkUser.toObject(), { password: userPassword } = _a, resultData = __rest(_a, ["password"]);
-        resultData.token = authJwt.generateAuthJwt({
-            id: checkUser === null || checkUser === void 0 ? void 0 : checkUser._id,
-            expiresIn: (Number(env.TOKEN_EXPIRES_IN) || 0).toString(),
-            email,
-            deviceId
-        });
-        if (!resultData.token) {
-            return response.error(req, res, { msgCode: 'SOMETHING_WRONG' }, httpStatus.SOMETHING_WRONG);
-        }
-        req.loginData = {
-            deviceDetails: { deviceId, deviceToken },
-            authDetails: resultData
-        };
-        return next();
-    }
-    catch (err) {
-        console.error(err);
-        return response.error(req, res, { msgCode: 'SOMETHING_WRONG' }, httpStatus.SOMETHING_WRONG);
-    }
-});
-exports.login = login;

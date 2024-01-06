@@ -3,9 +3,9 @@ import Joi from 'joi';
 const login = Joi.object({
     email: Joi.string().required(),
     password: Joi.string().required(),
-    device_token: Joi.string().required(),
-    device_id: Joi.string().required(),
-    device_type: Joi.string().default('web').optional()
+    deviceToken: Joi.string().required(),
+    deviceId: Joi.string().required(),
+    deviceType: Joi.string().default('web').optional()
 });
 
 const register = Joi.object({
@@ -13,7 +13,7 @@ const register = Joi.object({
     mobile: Joi.number().allow(''),
     profilePic: Joi.string().allow(''),
     password: Joi.string().required(),
-    userType: Joi.number().optional(),
+    userType: Joi.string().optional(),
 });
 
 

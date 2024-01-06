@@ -22,16 +22,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const controller = __importStar(require("../../../controller/user/auth"));
-const commonController = __importStar(require("../../../controller/common/common"));
-const schema = __importStar(require("../../../validation/common"));
-const requestValidator_1 = require("../../../middleware/requestValidator");
-const router = express_1.default.Router();
-router.post('/register', (0, requestValidator_1.reqValidator)(schema.register), controller.register);
-router.post('/login', (0, requestValidator_1.reqValidator)(schema.login), controller.login, commonController.createSession);
-exports.default = router;
+exports.reqValidator = exports.errorHandler = exports.verifyAuthToken = exports.generateAuthJwt = void 0;
+const errorHandler = __importStar(require("./errorHandler"));
+exports.errorHandler = errorHandler;
+const auth_1 = require("./auth");
+Object.defineProperty(exports, "generateAuthJwt", { enumerable: true, get: function () { return auth_1.generateAuthJwt; } });
+Object.defineProperty(exports, "verifyAuthToken", { enumerable: true, get: function () { return auth_1.verifyAuthToken; } });
+const requestValidator_1 = require("./requestValidator");
+Object.defineProperty(exports, "reqValidator", { enumerable: true, get: function () { return requestValidator_1.reqValidator; } });

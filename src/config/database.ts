@@ -1,4 +1,4 @@
-import mongoose, { Connection } from 'mongoose';
+import mongoose from 'mongoose';
 import { config } from '../config/index';
 
 mongoose.Promise = global.Promise;
@@ -9,21 +9,20 @@ if (!connectionUri) {
   throw new Error('MongoDB URI is not defined in the configuration.');
 }
 
-const connection = mongoose.createConnection(connectionUri);
+mongoose.connect(connectionUri);
 
-connection.on('connected', () => {
+const dbConnection = mongoose.connection;
+
+dbConnection.on('connected', () => {
   console.log('Database connection established successfully');
 });
 
-connection.on('error', (err) => {
+dbConnection.on('error', (err) => {
   console.log(`Database connection has occurred error: ${err}`);
 });
 
-connection.on('disconnected', () => {
+dbConnection.on('disconnected', () => {
   console.log(`Database Connection to "${connectionUri}" is disconnected`);
 });
 
-const connections: Record<string, Connection> = {};
-connections[connectionUri] = connection;
-
-export { connections };
+export { dbConnection };
