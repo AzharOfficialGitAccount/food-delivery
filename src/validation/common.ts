@@ -10,14 +10,23 @@ const login = Joi.object({
 
 const register = Joi.object({
     email: Joi.string().allow(''),
+    userName: Joi.string().allow(''),
     mobile: Joi.number().allow(''),
     profilePic: Joi.string().allow(''),
     password: Joi.string().required(),
-    userType: Joi.string().optional(),
+    roles: Joi.string().required(),
 });
 
+const profile = Joi.object({
+    email: Joi.string().allow(''),
+    userName: Joi.string().allow(''),
+    profilePic: Joi.string().allow(''),
+    mobile: Joi.number().allow(),
+    roles: Joi.string().allow()
+});
 
 export {
     login,
-    register
+    register,
+    profile
 };

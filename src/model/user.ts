@@ -2,9 +2,10 @@ import { Document, Schema, Model, model } from 'mongoose';
 export interface UserDocument extends Document {
     mobile?: number;
     email: string;
+    userName: string,
     password?: string;
     profilePic?: string;
-    userType?: string;
+    roles?: string;
     isDeleted?: boolean;
     isActive?: boolean;
     jwt?: string[];
@@ -15,6 +16,9 @@ const userSchema: Schema<UserDocument> = new Schema({
         type: String,
         required: true
     },
+    userName: {
+        type: String,
+    },
     mobile: {
         type: Number
     },
@@ -24,7 +28,7 @@ const userSchema: Schema<UserDocument> = new Schema({
     profilePic: {
         type: String
     },
-    userType: {
+    roles: {
         type: String,
     },
     isDeleted: {

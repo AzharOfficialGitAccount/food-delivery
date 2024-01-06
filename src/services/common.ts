@@ -1,4 +1,4 @@
-import { Document, Model, Types } from 'mongoose';
+import { Document, Model, FilterQuery } from 'mongoose';
 
 type Condition = Record<string, any>;
 
@@ -56,3 +56,34 @@ export async function userProfile<T extends Document>(
         return false;
     }
 }
+
+export async function deleteAllByCondition<T extends Document>(
+    Model: Model<T>,
+    conditions: FilterQuery<T>
+): Promise<number | null> {
+    try {
+        const data = await Model.deleteMany(conditions);
+        return data.deletedCount || null;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export async function deleteByField<T extends Document>(
+    Model: Model<T>,
+    conditions: FilterQuery<T>
+): Promise<T | null> {
+    try {
+        const data = await Model.findOneAndDelete(conditions);
+        return data ? JSON.parse(JSON.stringify(data)) : null;
+    } catch (error) {
+        return null;
+    }
+}
+
+
+
+
+
+

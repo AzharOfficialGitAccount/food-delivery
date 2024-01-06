@@ -58,7 +58,7 @@ export const errorNotFound = (req: Request, res: Response, error: ErrorResponse,
     return jsonResponse(res, response, errorCode || 200);
 };
 
-export const success = (req: Request, res: Response, result: SuccessResponse, code: number = 200) => {
+export const success = (req: Request, res: Response, result: SuccessResponse, code: number = 201) => {
     const lng = req.headers['accept-language'] || 'en';
     const response = {
         success: true,
@@ -70,8 +70,8 @@ export const success = (req: Request, res: Response, result: SuccessResponse, co
         },
         time: Date.now(),
     };
-    const errorCode = 200;
-    return jsonResponse(res, response, errorCode || 200);
+    const errorCode = 201;
+    return jsonResponse(res, response, errorCode || 201);
 };
 
 export const sendPasswordMismatch = (req: Request, res: Response, result: ErrorResponse, code: number = 401) => {
