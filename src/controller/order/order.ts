@@ -3,6 +3,7 @@ import * as response from '../../response/index';
 import * as httpStatus from 'http-status';
 import * as model from '../../model';
 import * as commonService from '../../services/common';
+import { getSocketIO } from '../../webSockets/socket';
 
 export const order = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -120,3 +121,23 @@ export const getOrders = async (req: Request, res: Response): Promise<void> => {
         return <any>response.error(req, res, { msgCode: 'SOMETHING_WRONG' }, httpStatus.INTERNAL_SERVER_ERROR);
     }
 };
+
+export const notifyOrderStatus = async (req: Request, res: Response): Promise<void> => {
+    const { Order } = model;
+    const { orderId, orderStatus } = req.body;
+
+    const updateDetail = { orderStatus };
+    const updatedStatus = await commonService.updateByCondition(Order, { _id: orderId }, updateDetail);
+    if (!updatedStatus) {
+        return <any>response.error(req, res, { msgCode: 'STATUS_NOT_UPDATED' }, httpStatus.NOT_FOUND);
+    }
+
+    const io = getSocketIO();
+    io.emit(`order-status-${orderId}`, { status: orderStatus });
+
+    return <any>response.success(req, res, { msgCode: 'UPDATED', data: updatedStatus }, httpStatus.OK);
+};
+
+
+
+

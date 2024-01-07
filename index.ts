@@ -6,6 +6,7 @@ import { errorHandler } from './src/middleware';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import routes from './src/routes';
+import { initializeSocketIO } from './src/webSockets/socket';
 
 dotenv.config();
 
@@ -26,6 +27,8 @@ app.use(bodyParser.json({ limit: '2mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const httpServer = http.createServer(app);
+
+initializeSocketIO(httpServer);
 
 httpServer.listen(process.env.PORT, () => {
   console.info(`Server up successfully - port: ${process.env.PORT}`);
