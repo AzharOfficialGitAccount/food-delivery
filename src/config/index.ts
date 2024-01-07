@@ -24,8 +24,4 @@ export const config = {
   secret: env.SECRET,
   mongodbUserUri: env.MONGODB_USER_URI,
   expireIn: env.EXPIRE_IN,
-
-  DB_USER_NAME: env.DB_USER_NAME,
-  DB_PASSWORD: env.DB_PASSWORD,
-  DB_USER: env.DB_USER,
 };

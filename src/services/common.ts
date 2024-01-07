@@ -43,20 +43,6 @@ export async function getByCondition<T extends Document>(
     }
 }
 
-export async function userProfile<T extends Document>(
-    Model: Model<T>,
-    condition: Condition,
-    project: Record<string, any>
-): Promise<T | null | false> {
-    try {
-        const data = await Model.findOne(condition, project).lean();
-        return data ? (data as T) : null;
-    } catch (error) {
-        console.error('error:', error);
-        return false;
-    }
-}
-
 export async function deleteAllByCondition<T extends Document>(
     Model: Model<T>,
     conditions: FilterQuery<T>
