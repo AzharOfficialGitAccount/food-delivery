@@ -3,9 +3,14 @@ export enum UserType {
     USER = 'customer'
 }
 
+export enum targetType {
+    restaurant = 'restaurant',
+    driver = 'driver'
+}
+
 export enum UserStatus {
-    BLOCK = 'block',
-    UNBLOCK = 'unblock'
+    Owner = 'restaurant_owner',
+    driver = 'driver'
 }
 
 export const ErrorMessage = {
@@ -30,3 +35,5 @@ export type UserStatuses = typeof UserStatus[keyof typeof UserStatus];
 export type ErrorMessages = keyof typeof ErrorMessage;
 export type ErrorCodes = keyof typeof ErrorCode;
 export type DeviceTypes = keyof typeof DeviceType;
+export type targetTypes = keyof typeof targetType;
+

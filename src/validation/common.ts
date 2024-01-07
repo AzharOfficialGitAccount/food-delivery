@@ -64,6 +64,14 @@ const orderStatus = Joi.object({
     orderStatus: Joi.string().allow()
 });
 
+const reviewRating = Joi.object({
+    rating: Joi.number().allow(''),
+    review: Joi.string().allow(''),
+    targetType: Joi.string().allow(''),
+    restaurantId: Joi.string().allow(''),
+    driverId: Joi.string().allow(''),
+});
+
 export {
     login,
     register,
@@ -72,5 +80,6 @@ export {
     menu,
     menuQuery,
     order,
-    orderStatus
+    orderStatus,
+    reviewRating
 };

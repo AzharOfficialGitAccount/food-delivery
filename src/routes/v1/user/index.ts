@@ -13,6 +13,7 @@ router.get('/profile', verifyAuthToken, controller.getProfile);
 router.put('/profile', reqValidator(schema.profile), verifyAuthToken, controller.updateProfile);
 router.delete('/delete-account', verifyAuthToken, controller.deleteAccount);
 router.post('/logout', verifyAuthToken, controller.logout);
-router.put('/be-owner', verifyAuthToken, controller.makeOwner);
+router.put('/be-owner', verifyAuthToken, controller.makeRestaurantOwner);
+router.put('/be-driver', verifyAuthToken, controller.makeDriver);
 
 export default router;

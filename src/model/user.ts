@@ -13,8 +13,9 @@ export interface UserDocument extends Document {
 }
 
 export enum userStatus {
-    Owner = 'Owner',
-    Customer = 'User',
+    Owner = 'restaurant_owner',
+    Customer = 'user',
+    Driver = 'driver'
 }
 
 const userSchema: Schema<UserDocument> = new Schema({
