@@ -3,6 +3,7 @@ import * as response from '../../response/index';
 import * as httpStatus from 'http-status';
 import * as model from '../../model';
 import * as commonService from '../../services/common';
+import * as helper from '../../utils/helper';
 
 export const restaurants = async (req: Request, res: Response) => {
     try {
@@ -38,9 +39,9 @@ export const getRestaurant = async (req: Request, res: Response): Promise<void> 
         const ownerId: string = (req as any).data?.id;
         const { Restaurant } = model;
 
-        const projects = { _id: 1, name: 1, contactNo: 1, cuisine: 1, openingHours: 1, address: 1, media: 1, url: 1 }
-        const restaurant = await commonService.getByCondition(Restaurant, { ownerId }, projects);
+        const projects = { _id: 0, name: 1, contactNo: 1, cuisine: 1, openingHours: 1, address: 1, media: 1, url: 1 }
 
+        const restaurant = await commonService.getAll(Restaurant as any, { ownerId }, projects);
         if (!restaurant) {
             return <any>response.error(req, res, { msgCode: 'RESTAURANT_NOT_FOUND' }, httpStatus.NOT_FOUND);
         }
@@ -49,6 +50,7 @@ export const getRestaurant = async (req: Request, res: Response): Promise<void> 
         return <any>response.error(req, res, { msgCode: 'SOMETHING_WRONG' }, httpStatus.INTERNAL_SERVER_ERROR);
     }
 };
+
 
 
 export const updateRestaurant = async (req: Request, res: Response): Promise<void> => {
@@ -93,3 +95,54 @@ export const deleteRestaurant = async (req: Request, res: Response): Promise<voi
         return <any>response.error(req, res, { msgCode: 'SOMETHING_WRONG' }, httpStatus.INTERNAL_SERVER_ERROR);
     }
 };
+
+export const searchRestaurant = async (req: Request, res: Response): Promise<void> => {
+    const { Restaurant } = model;
+    const { page = 1, pageLimit = 10, search } = req.query as { page?: number; pageLimit?: number; search?: string };
+    const { skip, limit } = helper.getPagination(page, pageLimit);
+
+    const aggregationPipeline: any[] = [];
+
+    if (search) {
+        const regexSearch = new RegExp(search.trim(), 'i');
+
+        aggregationPipeline.push({
+            $facet: {
+                filteredDocs: [
+                    { $match: { isDeleted: { $ne: true }, status: 'active' } },
+                    { $project: { name: 1 } }
+                ],
+                nameSearch: [
+                    { $match: { name: { $regex: regexSearch } } },
+                    { $project: { _id: 0, name: 1 } }
+                ]
+            }
+        });
+        aggregationPipeline.push({
+            $facet: {
+                finalResult: [
+                    { $project: { combinedResult: { $concatArrays: ['$filteredDocs', '$nameSearch'] } } },
+                    { $unwind: '$combinedResult' },
+                    { $replaceRoot: { newRoot: '$combinedResult' } }
+                ]
+            }
+        });
+    }
+
+    aggregationPipeline.push(
+        { $skip: skip || 0 },
+        { $limit: Number(limit) }
+    );
+
+    try {
+        const result = await Restaurant.aggregate<Document>(aggregationPipeline);
+        return <any>response.success(req, res, { msgCode: 'PRODUCT_DETAILS', data: result }, httpStatus.OK);
+    } catch (err) {
+        console.log(err);
+        return <any>response.error(req, res, { msgCode: 'SOMETHING_WRONG' }, <any>httpStatus.SOMETHING_WRONG);
+    }
+};
+
+
+
+

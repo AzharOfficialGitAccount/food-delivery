@@ -82,6 +82,25 @@ export async function deleteByField<T extends Document>(
     }
 }
 
+interface BaseModel extends Document {
+    createdAt: Date;
+}
+
+export async function getAll<T extends BaseModel>(
+    Model: Model<T>,
+    condition: Record<string, any>,
+    project: Record<string, any>
+): Promise<T[] | null> {
+    try {
+        const data = await Model.find(condition, project).sort({ createdAt: -1 }).lean();
+        return data ? JSON.parse(JSON.stringify(data)) : null;
+    } catch (error) {
+        return null;
+    }
+}
+
+
+
 
 
 

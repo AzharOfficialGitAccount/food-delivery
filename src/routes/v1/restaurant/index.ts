@@ -10,5 +10,6 @@ router.post('/restaurant', reqValidator(schema.restaurant), verifyAuthToken, res
 router.get('/get-restaurant', verifyAuthToken, restaurantController.getRestaurant);
 router.put('/update-restaurant', reqValidator(schema.restaurant), verifyAuthToken, restaurantController.updateRestaurant);
 router.delete('/delete-restaurant', verifyAuthToken, restaurantController.deleteRestaurant);
+router.get('/search-restaurant', verifyAuthToken, restaurantController.searchRestaurant);
 
 export default router;
