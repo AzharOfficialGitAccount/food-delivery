@@ -6,6 +6,7 @@ import * as commonService from '../../services/common';
 import * as passwordHash from '../../utils/password';
 import * as authJwt from '../../middleware/auth';
 import * as env from '../../constant/environment';
+import * as commonCOnstant from '../../constant/common';
 import mongoose from 'mongoose';
 
 export const register = async (req: Request, res: Response) => {
@@ -20,7 +21,8 @@ export const register = async (req: Request, res: Response) => {
             password: await passwordHash.generateHash(password),
             roles,
             userName,
-            address
+            address,
+            userStatus: commonCOnstant.UserType.USER
         };
         const checkEmail = await commonService.getByCondition(User, { email });
         if (checkEmail) {

@@ -1,6 +1,6 @@
 export enum UserType {
     OWNER = 'Owner',
-    USER = 'customer'
+    USER = 'user'
 }
 
 export enum targetType {

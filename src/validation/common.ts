@@ -14,7 +14,6 @@ const register = Joi.object({
     mobile: Joi.number().allow(''),
     profilePic: Joi.string().allow(''),
     password: Joi.string().required(),
-    roles: Joi.string().required(),
     address: Joi.string().allow()
 });
 
