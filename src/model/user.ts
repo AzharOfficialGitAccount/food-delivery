@@ -5,11 +5,16 @@ export interface UserDocument extends Document {
     userName: string,
     password?: string;
     profilePic?: string;
-    roles?: string;
+    userStatus?: string;
     address?: string,
     isDeleted?: boolean;
     isActive?: boolean;
     jwt?: string[];
+}
+
+export enum userStatus {
+    Owner = 'Owner',
+    Customer = 'User',
 }
 
 const userSchema: Schema<UserDocument> = new Schema({
@@ -29,8 +34,10 @@ const userSchema: Schema<UserDocument> = new Schema({
     profilePic: {
         type: String
     },
-    roles: {
+    userStatus: {
         type: String,
+        enum: Object.values(userStatus),
+        default: userStatus.Customer,
     },
     address: {
         type: String,

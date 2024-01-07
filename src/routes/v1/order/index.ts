@@ -1,5 +1,5 @@
 import express from 'express';
-import * as ordertController from '../../../controller/order';
+import * as ordertController from '../../../controller/order/order';
 import * as schema from '../../../validation/common';
 import { reqValidator } from '../../../middleware/requestValidator';
 import { verifyAuthToken } from '../../../middleware/auth';

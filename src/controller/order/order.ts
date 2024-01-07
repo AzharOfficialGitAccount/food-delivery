@@ -36,7 +36,6 @@ export const order = async (req: Request, res: Response): Promise<void> => {
                 email: user.email,
                 userName: user.userName,
                 mobile: user.mobile,
-                roles: user.roles,
                 address: user.address,
             }],
             restaurantDetails: [{

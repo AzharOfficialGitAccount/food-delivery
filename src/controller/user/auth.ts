@@ -38,6 +38,23 @@ export const register = async (req: Request, res: Response) => {
     }
 };
 
+export const makeOwner = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const userId: string = (req as any).data?.id;
+        const { User } = model;
+
+        const updateDetail = { userStatus: 'Owner' };
+        const updatedStatus = await commonService.updateByCondition(User, { _id: userId }, updateDetail);
+        if (!updatedStatus) {
+            return <any>response.error(req, res, { msgCode: 'STATUS_NOT_UPDATED' }, httpStatus.NOT_FOUND);
+        }
+        return <any>response.success(req, res, { msgCode: 'UPDATED', data: updatedStatus }, httpStatus.OK);
+    } catch (error) {
+        console.error(error);
+        return <any>response.error(req, res, { msgCode: 'SOMETHING_WRONG' }, httpStatus.INTERNAL_SERVER_ERROR);
+    }
+};
+
 export const login = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { email, password, deviceToken, deviceId, deviceType } = req.body;
