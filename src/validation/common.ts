@@ -15,6 +15,7 @@ const register = Joi.object({
     profilePic: Joi.string().allow(''),
     password: Joi.string().required(),
     roles: Joi.string().required(),
+    address: Joi.string().allow()
 });
 
 const restaurant = Joi.object({
@@ -50,7 +51,17 @@ const profile = Joi.object({
     userName: Joi.string().allow(''),
     profilePic: Joi.string().allow(''),
     mobile: Joi.number().allow(),
-    roles: Joi.string().allow()
+    roles: Joi.string().allow(),
+    address: Joi.string().allow()
+});
+
+const order = Joi.object({
+    restaurantId: Joi.string().allow(),
+    menuId: Joi.string().allow()
+});
+const orderStatus = Joi.object({
+    orderId: Joi.string().allow(),
+    orderStatus: Joi.string().allow()
 });
 
 export {
@@ -59,5 +70,7 @@ export {
     profile,
     restaurant,
     menu,
-    menuQuery
+    menuQuery,
+    order,
+    orderStatus
 };

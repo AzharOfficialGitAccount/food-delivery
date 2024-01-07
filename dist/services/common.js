@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userProfile = exports.getByCondition = exports.updateByCondition = exports.create = void 0;
+exports.getAll = exports.deleteByField = exports.deleteAllByCondition = exports.userProfile = exports.getByCondition = exports.updateByCondition = exports.create = void 0;
 function create(Model, details) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -62,3 +62,40 @@ function userProfile(Model, condition, project) {
     });
 }
 exports.userProfile = userProfile;
+function deleteAllByCondition(Model, conditions) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const data = yield Model.deleteMany(conditions);
+            return data.deletedCount || null;
+        }
+        catch (error) {
+            console.error(error);
+            return null;
+        }
+    });
+}
+exports.deleteAllByCondition = deleteAllByCondition;
+function deleteByField(Model, conditions) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const data = yield Model.findOneAndDelete(conditions);
+            return data ? JSON.parse(JSON.stringify(data)) : null;
+        }
+        catch (error) {
+            return null;
+        }
+    });
+}
+exports.deleteByField = deleteByField;
+function getAll(Model, condition, project) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const data = yield Model.find(condition, project).sort({ createdAt: -1 }).lean();
+            return data ? JSON.parse(JSON.stringify(data)) : null;
+        }
+        catch (error) {
+            return null;
+        }
+    });
+}
+exports.getAll = getAll;

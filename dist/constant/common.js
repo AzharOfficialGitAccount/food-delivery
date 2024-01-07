@@ -22,7 +22,7 @@ exports.ErrorCode = {
 };
 var DeviceType;
 (function (DeviceType) {
-    DeviceType[DeviceType["Android"] = 1] = "Android";
-    DeviceType[DeviceType["IOS"] = 2] = "IOS";
-    DeviceType[DeviceType["Web"] = 3] = "Web";
+    DeviceType["Android"] = "Android";
+    DeviceType["IOS"] = "ios";
+    DeviceType["Web"] = "web";
 })(DeviceType || (exports.DeviceType = DeviceType = {}));

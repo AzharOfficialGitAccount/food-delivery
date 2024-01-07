@@ -10,7 +10,7 @@ import mongoose from 'mongoose';
 
 export const register = async (req: Request, res: Response) => {
     try {
-        const { email, userName, mobile, profilePic, password, roles } = req.body;
+        const { email, userName, mobile, profilePic, address, password, roles } = req.body;
         const { User } = model;
 
         const userData = {
@@ -19,7 +19,8 @@ export const register = async (req: Request, res: Response) => {
             profilePic,
             password: await passwordHash.generateHash(password),
             roles,
-            userName
+            userName,
+            address
         };
         const checkEmail = await commonService.getByCondition(User, { email });
         if (checkEmail) {
@@ -83,7 +84,7 @@ export const getProfile = async (req: Request, res: Response): Promise<void> => 
         const id: string = (req as any).data?.id;
         const { User } = model;
 
-        const projects = { _id: 1, email: 1, userName: 1, mobile: 1, profilePic: 1, roles: 1 }
+        const projects = { _id: 1, email: 1, userName: 1, mobile: 1, profilePic: 1, roles: 1, address: 1 }
         const adminExists = await commonService.getByCondition(User, { _id: id }, projects);
 
         if (!adminExists) {
@@ -100,14 +101,15 @@ export const updateProfile = async (req: Request, res: Response): Promise<void> 
     try {
         const userId = (req as any).data.userId;
         const { User } = model;
-        const { username, email, mobile, profilePic, roles } = req.body;
+        const { username, email, mobile, profilePic, roles, address } = req.body;
 
         const updateDetail = {
             username,
             email,
             mobile,
             profilePic,
-            roles
+            roles,
+            address
         }
         const updatedUser = await commonService.updateByCondition(User, userId, updateDetail);
         if (!updatedUser) {

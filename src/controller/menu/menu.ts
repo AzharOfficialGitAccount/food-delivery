@@ -45,7 +45,7 @@ export const getMenu = async (req: Request, res: Response): Promise<void> => {
         const { Menu } = model;
 
         if (ownerId || menuId || restaurantId) {
-            const projects = { _id: 1, itemName: 1, description: 1, price: 1, category: 1, isVegetarian: 1, isVegan: 1, isSpicy: 1 };
+            const projects = { itemName: 1, description: 1, price: 1, category: 1, isVegetarian: 1, isVegan: 1, isSpicy: 1 };
 
             let condition: Record<string, any> = {};
 

@@ -1,46 +1,13 @@
-import { Document, Schema, Model, model, Types } from 'mongoose';
-
-interface Menu {
-    menuId: Types.ObjectId;
-    price: number;
-    itemName: string;
-}
-
-interface UserDetails {
-    userId: Types.ObjectId;
-    email: string;
-    userName: string;
-    mobile: number;
-    roles: string;
-}
-
-interface RestaurantDetails {
-    restaurantId: Types.ObjectId;
-    name: string;
-    address: string;
-}
-
-export interface OrderDocument extends Document {
-    userId: Types.ObjectId;
-    restaurantId: Types.ObjectId;
-    orderStatus?: string;
-    menuDetails?: Menu[];
-    userDetails?: UserDetails[];
-    restaurantDetails?: RestaurantDetails[];
-    paymentStatus?: string;
-    transactionId?: string;
-    totalAmount?: number;
-}
-
-export enum OrderStatus {
-    Placed = 'placed',
-    Processing = 'processing',
-    Shipped = 'shipped',
-    Delivered = 'delivered',
-    Cancelled = 'cancelled',
-}
-
-const orderSchema: Schema<OrderDocument> = new Schema({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const mongoose_1 = require("mongoose");
+var OrderStatus;
+(function (OrderStatus) {
+    OrderStatus["Placed"] = "placed";
+    OrderStatus["Delivered"] = "delivered";
+    OrderStatus["Rejected"] = "rejected";
+})(OrderStatus || (OrderStatus = {}));
+const orderSchema = new mongoose_1.Schema({
     orderStatus: {
         type: String,
         enum: Object.values(OrderStatus),
@@ -49,7 +16,7 @@ const orderSchema: Schema<OrderDocument> = new Schema({
     menuDetails: [
         {
             menuId: {
-                type: Schema.Types.ObjectId,
+                type: mongoose_1.Schema.Types.ObjectId,
                 ref: 'menus',
                 required: true,
             },
@@ -66,7 +33,7 @@ const orderSchema: Schema<OrderDocument> = new Schema({
     userDetails: [
         {
             userId: {
-                type: Schema.Types.ObjectId,
+                type: mongoose_1.Schema.Types.ObjectId,
                 ref: 'users',
                 required: true,
             },
@@ -87,7 +54,7 @@ const orderSchema: Schema<OrderDocument> = new Schema({
     restaurantDetails: [
         {
             restaurantId: {
-                type: Schema.Types.ObjectId,
+                type: mongoose_1.Schema.Types.ObjectId,
                 ref: 'restaurants',
                 required: true,
             },
@@ -101,10 +68,6 @@ const orderSchema: Schema<OrderDocument> = new Schema({
             },
         },
     ],
-    totalAmount: {
-        type: Number,
-        default: 0,
-    },
     paymentStatus: {
         type: String,
     },
@@ -115,7 +78,13 @@ const orderSchema: Schema<OrderDocument> = new Schema({
     timestamps: true,
     versionKey: false,
 });
-
-const Order: Model<OrderDocument> = model<OrderDocument>('orders', orderSchema);
-
-export default Order;
+orderSchema.virtual('totalAmount').get(function () {
+    if (this.menuDetails) {
+        return this.menuDetails.reduce((total, menu) => total + (menu.price || 0), 0);
+    }
+    else {
+        return 0;
+    }
+});
+const Order = (0, mongoose_1.model)('orders', orderSchema);
+exports.default = Order;

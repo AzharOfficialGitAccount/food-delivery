@@ -69,19 +69,7 @@ const verifyAuthToken = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
             return response.error(req, res, { msgCode: 'MISSING_TOKEN' }, http_status_1.default.UNAUTHORIZED);
         }
         const cleanedToken = token.replace(/^Bearer\s+/, '');
-        const decoded = yield new Promise((resolve, reject) => {
-            jsonwebtoken_1.default.verify(cleanedToken, environment_1.env.SECRET_KEY || '', (error, decoded) => {
-                if (error) {
-                    reject(error);
-                }
-                else {
-                    resolve(decoded);
-                }
-            });
-        });
-        if (!decoded) {
-            return response.error(req, res, { msgCode: 'INVALID_TOKEN' }, http_status_1.default.UNAUTHORIZED);
-        }
+        const decoded = jsonwebtoken_1.default.decode(cleanedToken);
         const sessionModel = model_1.Session;
         const UserModel = model_1.User;
         const condition = { accessToken: cleanedToken };
@@ -96,9 +84,9 @@ const verifyAuthToken = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
             return response.error(req, res, { msgCode: 'INVALID_TOKEN' }, http_status_1.default.UNAUTHORIZED);
         }
         else {
-            const userCondition = { _id: checkJwt.userId, isDeleted: false, isActive: false };
+            const userCondition = { _id: checkJwt.userId, isDeleted: false, isActive: true };
             const checkUser = yield commonService.getByCondition(UserModel, userCondition);
-            if (checkUser) {
+            if (!checkUser) {
                 return response.error(req, res, { msgCode: 'USER_IS_BLOCKED' }, http_status_1.default.UNAUTHORIZED);
             }
             req.data = decoded;

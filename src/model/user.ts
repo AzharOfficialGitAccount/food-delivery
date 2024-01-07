@@ -6,6 +6,7 @@ export interface UserDocument extends Document {
     password?: string;
     profilePic?: string;
     roles?: string;
+    address?: string,
     isDeleted?: boolean;
     isActive?: boolean;
     jwt?: string[];
@@ -31,6 +32,9 @@ const userSchema: Schema<UserDocument> = new Schema({
     roles: {
         type: String,
     },
+    address: {
+        type: String,
+    },
     isDeleted: {
         type: Boolean,
         default: false
@@ -39,9 +43,6 @@ const userSchema: Schema<UserDocument> = new Schema({
         type: Boolean,
         default: true
     },
-    jwt: [{
-        type: String
-    }]
 },
     {
         timestamps: true,

@@ -27,16 +27,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const controller = __importStar(require("../../../controller/user/auth"));
-const commonController = __importStar(require("../../../controller/common/common"));
-const schema = __importStar(require("../../../validation/common"));
-const requestValidator_1 = require("../../../middleware/requestValidator");
+const ordertController = __importStar(require("../../../controller/order"));
 const auth_1 = require("../../../middleware/auth");
 const router = express_1.default.Router();
-router.post('/register', (0, requestValidator_1.reqValidator)(schema.register), controller.register);
-router.post('/login', (0, requestValidator_1.reqValidator)(schema.login), controller.login, commonController.createSession);
-router.get('/profile', auth_1.verifyAuthToken, controller.getProfile);
-router.put('/profile', (0, requestValidator_1.reqValidator)(schema.profile), auth_1.verifyAuthToken, controller.updateProfile);
-router.delete('/delete-account', auth_1.verifyAuthToken, controller.deleteAccount);
-router.post('/logout', auth_1.verifyAuthToken, controller.logout);
+// reqValidator(schema.order),
+router.post('/order', auth_1.verifyAuthToken, ordertController.order);
 exports.default = router;

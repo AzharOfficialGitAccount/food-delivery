@@ -6,6 +6,9 @@ const userSchema = new mongoose_1.Schema({
         type: String,
         required: true
     },
+    userName: {
+        type: String,
+    },
     mobile: {
         type: Number
     },
@@ -15,7 +18,7 @@ const userSchema = new mongoose_1.Schema({
     profilePic: {
         type: String
     },
-    userType: {
+    roles: {
         type: String,
     },
     isDeleted: {

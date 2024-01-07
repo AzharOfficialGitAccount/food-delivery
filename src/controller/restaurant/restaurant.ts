@@ -7,7 +7,7 @@ import * as helper from '../../utils/helper';
 
 export const restaurants = async (req: Request, res: Response) => {
     try {
-        const { menuId, name, contactNo, cuisine, openingHours, address, media, url } = req.body;
+        const { name, contactNo, cuisine, openingHours, address, media, url } = req.body;
         const { Restaurant } = model;
         const id: string = (req as any).data?.id;
 
@@ -17,7 +17,6 @@ export const restaurants = async (req: Request, res: Response) => {
             cuisine,
             openingHours,
             ownerId: id,
-            menuId,
             address,
             media,
             url
@@ -50,8 +49,6 @@ export const getRestaurant = async (req: Request, res: Response): Promise<void> 
         return <any>response.error(req, res, { msgCode: 'SOMETHING_WRONG' }, httpStatus.INTERNAL_SERVER_ERROR);
     }
 };
-
-
 
 export const updateRestaurant = async (req: Request, res: Response): Promise<void> => {
     try {
